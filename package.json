@@ -1,0 +1,18 @@
+{
+	"name": "pcmvc_webserver",
+	"version": "1.0.0",
+	"description": "webserver do Projeto Conjunto de Medição do Vento de Campinas",
+	"main": "src/server.js",
+	"scripts": {
+		"start": "node src/server.js",
+		"dev": "nodemon src/server.js"
+	},
+	"author": "GCastilho",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.1"
+	},
+	"devDependencies": {
+		"nodemon": "^1.19.1"
+	}
+}
