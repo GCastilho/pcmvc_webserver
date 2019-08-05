@@ -26,11 +26,11 @@ const minVersion = 1.0
  */
 module.exports = function(req, res) {
 	const signature = req.headers.signature
-	var message
+	let message
 	try {
 		message = JSON.parse(req.body)
 	} catch(e) {
-		return res.status(400).send('Error decoding input')
+		return res.status(400).send({ message: 'Error decoding input' })
 	}
 
 	if (minVersion > message.version) {
@@ -45,7 +45,7 @@ module.exports = function(req, res) {
 
 		return new Telemetry(message).save()
 	}).then(function sendSuccessMessage(telemetry) {
-		res.send('Successfully inserted telemetry in database')
+		res.send({ message: 'Successfully inserted telemetry in database' })
 	}).catch((error) => {
 		if (error.name === 'ValidationError'){
 			res.status(400).send({
@@ -63,8 +63,8 @@ module.exports = function(req, res) {
 }
 
 const isValidInputSignature = function(body, signature) {
-	const matricula = JSON.parse(body).RA
-	const ApiCredential = Models.credential()
+	const matricula = JSON.parse(body).matricula
+	const ApiCredential = Models.credential
 
 	return new Promise((resolve, reject) => {
 		ApiCredential.findOne({

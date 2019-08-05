@@ -15,7 +15,7 @@ const mongoose = require('../../db/mongoose')
  * mas protocolos futuros podem ser adicionados sem problema de compatibilidade
  * com os dispositivos já em funcionamento
  */
-var protocolo = new Object()
+var protocolo = {}
 
 /**
  * @param Model name
@@ -23,7 +23,7 @@ var protocolo = new Object()
  * @param Collection name
  */
 protocolo.v10 = mongoose.model('Telemetry', {
-	RA: {
+	matricula: {
 		type: Number,
 		required: true,
 		trim: true
@@ -74,7 +74,7 @@ const ApiCredential = mongoose.model('ApiCredential', {
 }, 'api_credential')
 
 
-var models = new Object()
+var models = {}
 models.protocol = function(version) {
 	/**
 	 * @description colocar os protocolos é um Map é mais eficiente que um
@@ -84,6 +84,9 @@ models.protocol = function(version) {
 	let protocols = new Map()
 
 	protocols.set(1.0, protocolo.v10)
+
+	/**@description esta chave deve sempre retornar a última versão do protocolo */
+	protocols.set('last', protocolo.v10)
 	
 	if (protocols.has(version)) {
 		return protocols.get(version)
@@ -92,8 +95,6 @@ models.protocol = function(version) {
 	}
 }
 
-models.credential = function() {
-	return ApiCredential
-}
+models.credential = ApiCredential
 
 module.exports = models
