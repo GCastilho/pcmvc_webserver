@@ -25,40 +25,52 @@ const minVersion = 1.0
  * @see ./models.js
  */
 module.exports = function(req, res) {
-	const signature = req.headers.signature
-	let message
-	try {
-		message = JSON.parse(req.body)
-	} catch(e) {
-		return res.status(400).send({ message: 'Error decoding input' })
-	}
+	req.body = ''
 
-	if (minVersion > message.version) {
-		return res.status(400)
-			.send({ error: `Minimum protocol version is ${minVersion} or higher` })
-	}
+	req.on('data', chunk => {
+		body += chunk
+		/**
+		 * @todo adicionar um tamanho máximo pra body,
+		 * retornando erro ao ultrapassar
+		 */
+	})
 
-	isValidInputSignature(req.body, signature)
-	.then(function saveTelemetry() {
-		const Telemetry = Models.protocol(message.version)
-		message.timestamp = new Date().getTime()
-
-		return new Telemetry(message).save()
-	}).then(function sendSuccessMessage(telemetry) {
-		res.send({ message: 'Successfully inserted telemetry in database' })
-	}).catch((error) => {
-		if (error.name === 'ValidationError'){
-			res.status(400).send({
-				error: `Message uses protocol version ${message.version} but does not follow it's standards`,
-				message: error.message
-			})
-		} else if (error.code === 401) {
-			res.status(401).send({ error: 'Fail to verify message signature, check your API Key' })
-		} else if (error.message === 'VersionNotFound') {
-			res.status(422).send({ error: `Unreconized protocol version: ${message.version}` })
-		} else {
-			res.status(500).send({ error: 'Internal server error' })
+	req.on('end', () => {
+		const signature = req.headers.signature
+		let message
+		try {
+			message = JSON.parse(req.body)
+		} catch(e) {
+			return res.status(400).send({ message: 'Error decoding input' })
 		}
+	
+		if (minVersion > message.ver) {
+			return res.status(400)
+				.send({ error: `Minimum protocol version is ${minVersion} or higher` })
+		}
+	
+		isValidInputSignature(req.body, signature)
+		.then(function saveTelemetry() {
+			const Telemetry = Models.protocol(message.ver)
+			message.timestamp = new Date().getTime()
+	
+			return new Telemetry(message).save()
+		}).then(function sendSuccessMessage(telemetry) {
+			res.send({ message: 'Successfully inserted telemetry in database' })
+		}).catch((error) => {
+			if (error.name === 'ValidationError'){
+				res.status(400).send({
+					error: `Message uses protocol version ${message.ver} but does not follow it's standards`,
+					message: error.message
+				})
+			} else if (error.code === 401) {
+				res.status(401).send({ error: 'Fail to verify message signature, check your API Key' })
+			} else if (error.message === 'VersionNotFound') {
+				res.status(422).send({ error: `Unreconized protocol version: ${message.ver}` })
+			} else {
+				res.status(500).send({ error: 'Internal server error' })
+			}
+		})
 	})
 }
 

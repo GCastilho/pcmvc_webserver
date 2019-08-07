@@ -15,7 +15,7 @@ const mongoose = require('../../db/mongoose')
  * mas protocolos futuros podem ser adicionados sem problema de compatibilidade
  * com os dispositivos já em funcionamento
  */
-var protocolo = {}
+let protocolo = {}
 
 /**
  * @param Model name
@@ -54,27 +54,7 @@ protocolo.v10 = mongoose.model('Telemetry', {
 	}
 }, 'telemetry')
 
-/**
- * @description Modelo das credenciais da API. Note que o nome da tabela com as
- * credenciais que a API irá procurar é a 'api_credential', esse nome pode ser
- * alterado em outros lugares se também for alterado aqui, ou a API não
- * conseguirá encontrar as credenciais de acesso à API e deixará de funcionar
- */
-const ApiCredential = mongoose.model('ApiCredential', {
-	matricula: {
-		type: Number,
-		required: true,
-		trim: true
-	},
-	api_key: {
-		type: String,
-		required: true,
-		trim: true
-	}
-}, 'api_credential')
-
-
-var models = {}
+let models = {}
 models.protocol = function(version) {
 	/**
 	 * @description colocar os protocolos é um Map é mais eficiente que um
@@ -95,6 +75,23 @@ models.protocol = function(version) {
 	}
 }
 
-models.credential = ApiCredential
+/**
+ * @description Modelo das credenciais da API. Note que o nome da tabela com as
+ * credenciais que a API irá procurar é a 'api_credential', esse nome pode ser
+ * alterado em outros lugares se também for alterado aqui, ou a API não
+ * conseguirá encontrar as credenciais de acesso à API e deixará de funcionar
+ */
+models.credential = mongoose.model('ApiCredential', {
+	matricula: {
+		type: Number,
+		required: true,
+		trim: true
+	},
+	api_key: {
+		type: String,
+		required: true,
+		trim: true
+	}
+}, 'api_credential')
 
 module.exports = models

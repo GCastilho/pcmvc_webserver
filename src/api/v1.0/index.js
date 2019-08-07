@@ -5,21 +5,9 @@
  */
 
 const express = require('express')
-const bodyParser = require('body-parser')
 
 const ApiV10Handler = express()
 ApiV10Handler.use(express.Router())
-
-/**
- * @description habilita a leitura do body do request HTTP
- */
-ApiV10Handler.use(bodyParser.text({
-	/**
-	 * @description por padrão, json é ignorado pelo .text() a menos que
-	 * explicitamente declarado na config
-	 */
-	type: 'json'
-}))
 
 /**
  * @description /telemetry é a parte da API relacionada aos dados
