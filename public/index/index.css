@@ -1,0 +1,12 @@
+header h1 {
+	text-align: center;
+}
+
+.container {
+	max-width: 960px;
+	margin: 0 auto;
+}
+
+.date_filter_box {
+	display:inline;
+}
