@@ -11,14 +11,16 @@ const mongoose = require('mongoose')
  * @description Database name: pcmvc
  */
 mongoose.connect('mongodb://127.0.0.1:27017/pcmvc', {
+	user: 'telemetry_server',
+	pass: 'kPI6dBZLbRVbPT2P0Q7M',
 	useNewUrlParser: true,
 	useCreateIndex: true
 })
 
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Database connection error:'));
 db.once('open', function() {
-	console.log('Connected to the database!')
+	console.log('Connected to the database')
 });
 
 /**
