@@ -18,10 +18,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/pcmvc', {
 })
 
 const db = mongoose.connection;
+
+/**@todo Parar a execução do script em caso de erro de conexão com o DB */
 db.on('error', console.error.bind(console, 'Database connection error:'));
-db.once('open', function() {
-	console.log('Connected to the database')
-});
 
 /**
  * @description ao exportar o mongoose, mantém-se as configurações

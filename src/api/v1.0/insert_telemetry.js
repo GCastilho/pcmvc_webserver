@@ -28,11 +28,11 @@ module.exports = function(req, res) {
 	req.body = ''
 
 	req.on('data', chunk => {
-		body += chunk
 		/**
-		 * @todo adicionar um tamanho máximo pra body,
+		 * @todo adicionar um tamanho máximo pra req.body,
 		 * retornando erro ao ultrapassar
 		 */
+		req.body += chunk
 	})
 
 	req.on('end', () => {
@@ -52,9 +52,17 @@ module.exports = function(req, res) {
 		isValidInputSignature(req.body, signature)
 		.then(function saveTelemetry() {
 			const Telemetry = Models.protocol(message.ver)
-			message.timestamp = new Date().getTime()
-	
-			return new Telemetry(message).save()
+
+			const data = {
+				matricula: message.matricula,
+				timestamp: new Date().getTime(),
+				latitude: message.lat,
+				longitude: message.lon,
+				altura: message.hgt,
+				wind_velocity: message.wind
+			}
+
+			return new Telemetry(data).save()
 		}).then(function sendSuccessMessage(telemetry) {
 			res.send({ message: 'Successfully inserted telemetry in database' })
 		}).catch((error) => {

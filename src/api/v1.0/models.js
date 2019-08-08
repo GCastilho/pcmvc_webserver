@@ -32,22 +32,22 @@ protocolo.v10 = mongoose.model('Telemetry', {
 		type: Number,
 		required: true
 	},
-	lat: {
+	latitude: {
 		type: Number,
 		required: true,
 		trim: true
 	},
-	lon: {
+	longitude: {
 		type: Number,
 		required: true,
 		trim: true
 	},
-	hgt: {
+	altura: {
 		type: Number,
 		required: true,
 		trim: true
 	},
-	wind: {
+	wind_velocity: {
 		type: Number,
 		required: true,
 		trim: true
