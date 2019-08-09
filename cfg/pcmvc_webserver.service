@@ -1,4 +1,5 @@
-# copy this file to /lib/systemd/system/ to install the service
+# link this file to /lib/systemd/system/pcmvc_webserver.service to install the service
+# (ln -s /srv/pcmvc_webserver/cfg/pcmvc_webserver.service /lib/systemd/system/pcmvc_webserver.service)
 
 [Unit]
 Description=PCMVC Webserver Application
@@ -10,6 +11,7 @@ Environment=PORT=80
 Type=simple
 User=webserver
 WorkingDirectory=/srv/pcmvc_webserver/
+ExecStartPre=/snap/bin/npm install
 ExecStart=/snap/bin/npm run start
 Restart=on-failure
 
