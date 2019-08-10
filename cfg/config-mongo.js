@@ -19,3 +19,43 @@ db.createUser({
 	roles: [ { role: "readWrite", db: "pcmvc" } ],
 	authenticationRestrictions: [{ clientSource: ["127.0.0.1"] }]
 })
+
+/**@see https://docs.mongodb.com/manual/reference/method/db.createCollection/#db.createCollection */
+db.createCollection('telemetry', {
+	validator : { $jsonSchema : {
+		bsonType: "object",
+		required: [ "matricula", "timestamp", "latitude", "longitude", "altura", "wind_velocity" ],
+		properties: {
+			matricula: {
+				bsonType: "long",
+				description: "deve ser um número e é obrigatório"
+			},
+			timestamp: {
+				bsonType: "date"
+			},
+			latitude: {
+				bsonType: "double",
+				description: "deve ser um número e é obrigatório"
+			},
+			longitude: {
+				bsonType: "double",
+				description: "deve ser um número e é obrigatório"
+			},
+			altura: {
+				bsonType: "double",
+				description: "deve ser um número e é obrigatório"
+			},
+			wind_velocity: {
+				bsonType: "double",
+				description: "deve ser um número e é obrigatório"
+			}
+		}
+	}},
+	validationLevel: "strict"
+})
+
+/**
+ * @description Usa 'timestamp' como index do mongo, para agilizar querys
+ * e reduzir o consumo de memória
+ */
+db.telemetry.createIndex({ timestamp:1 })
