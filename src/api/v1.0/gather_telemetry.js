@@ -2,9 +2,8 @@
  * api/v1.0/gather_telemetry.js
  * 
  * @description esse é o entrypoint da API para colher os dados de telemetria.
- * Um GET request irá retornar uma stream de JSON objects, um para cada linha,
- * filtrados de acordo com os parâmetros passados na query, o browser deverá
- * processar essa stream e retorná-la ao usuário num formato adequado (ex: CSV)
+ * Um GET request irá retornar um arquivo CSV para download, filtrado de acordo
+ * com os parâmetros passados na query
  */
 
 const CsvBuilder = require('csv-builder')
@@ -19,6 +18,8 @@ const builder = new CsvBuilder({ headers: [
 	'altura',
 	'wind_velocity'
 ]})
+.virtual('data', row => new Date(row.timestamp).toLocaleDateString('pt-BR'))
+.virtual('hora', row => new Date(row.timestamp).toLocaleTimeString('pt-BR'))
 
 module.exports = function(req, res) {
 	const query = req.query
@@ -47,16 +48,9 @@ module.exports = function(req, res) {
 		_id: 0,
 		__v: 0
 	})
-	.sort({timestamp:'ascending'})
+	.sort({ timestamp:'ascending' })
 	.lean()
 	.cursor()
-	.on('data', (row) => {
-		const DATE = new Date(row.timestamp)
-		const data = DATE.toLocaleDateString('pt-BR')
-		const hora = DATE.toLocaleTimeString('pt-BR')
-		row.data = data
-		row.hora = hora
-	})
 	.pipe(builder.createTransformStream())
 	.pipe(res)
 	.on('end', () => {

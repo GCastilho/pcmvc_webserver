@@ -1,9 +1,7 @@
-# link this file to /lib/systemd/system/pcmvc_webserver.service to install the service
-# (ln -s /srv/pcmvc_webserver/cfg/pcmvc_webserver.service /lib/systemd/system/pcmvc_webserver.service)
+# copy this file to /lib/systemd/system/pcmvc_webserver.service to install the service
 
 [Unit]
 Description=PCMVC Webserver Application
-#Documentation=https://example.com @todo substituir pelo endereço do site
 After=network.target
 
 [Service]

@@ -4,12 +4,15 @@
 # com capacidade de login (para realizar as configurações a seguir) (por questões de segurança)
 useradd -m -U webserver
 
-# Desabilita o login remoto para o webserver
+# Desabilita o login remoto para o webserver (trava o password)
 passwd -l webserver
 
-# Durante a última instalação foi necessário rodar esse comando para corrigir
-# "npm WARN lifecycle npm is using /var/lib/snapd/snap/node/2485/bin/node
-# but there is no node binary in the current PATH", se esse erro acontecer,
-# o comando seguinte irá resolvê-lo
-# Nota: O comando deve ser executado com o usuário que irá rodar o serviço
-runuser -l webserver -c 'npm config set scripts-prepend-node-path auto'
+#gera uma chave ssh (RSA) para autenticação do webserver com o repositório git
+runuser -l webserver -c 'ssh-keygen -b 4096'
+
+# Abre a porta 80 e 443 do firewall (http/https)
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+
+# Redireciona a porta 80 para a porta interna 8000, que é a que o webserver roda
+firewall-cmd --zone=public --add-forward-port=port=80:proto=tcp:toport=8000 --permanent
