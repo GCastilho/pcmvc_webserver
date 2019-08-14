@@ -1,14 +1,43 @@
 const path = require('path')
 const express = require('express')
+const hbs = require('hbs')
+const mongoose = require('./db/mongoose')
 
 const app = express()
 const port = process.env.PORT || 3000
 
 /**@description Define paths for express configs */
-const publicDirectoryPath = path.join(__dirname, '../public');
+const publicDirectoryPath = path.join(__dirname, '../public')
+const viewsPath = path.join(__dirname, './templates/views')
+const partialsPath = path.join(__dirname, './templates/partials')
+
+/**@description Setup handlebars engine and views location */
+app.set('view engine', 'hbs')
+app.set('views', viewsPath)
+hbs.registerPartials(partialsPath)
 
 /**@description Setup static directory to serve */
-app.use(express.static(publicDirectoryPath));
+app.use(express.static(publicDirectoryPath))
+
+/**@description Handler da home page */
+app.get('/', (req, res) => {
+	let matricula = []
+	/**
+	 * @todo Substituir uso do modelo de credential pela lista de RAs da
+	 * collection de cadastro de usuários (especialmente por segurança)
+	 */
+	const Credential = require('./api/v1.0/models').credential
+	Credential.find({})
+	.then((result) => {
+		result.forEach(entry => {
+			matricula.push(entry.matricula)
+		})
+	}).finally(() => {
+		res.render('index', {
+			matricula
+		})
+	})
+})
 
 /**
  * @description Os handlers para todos os requests para a API
@@ -20,7 +49,7 @@ app.use('/api', require('./api'))
  * @description Esse handler será executado se nenhum outro path for encontrado
  * na pasta pública ou nos handlers manuais (como o da API)
  */
-app.use((req, res) => {
+app.use('*', (req, res) => {
 	/**@todo uma mensagem de 'not found' mais bonita */
 	res.status(404).send('<h1>404 - Not found</h1>')
 })

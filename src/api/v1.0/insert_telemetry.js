@@ -76,7 +76,10 @@ module.exports = function(req, res) {
 			} else if (error.message === 'VersionNotFound') {
 				res.status(422).send({ error: `Unreconized protocol version: ${message.ver}` })
 			} else {
-				res.status(500).send({ error: 'Internal server error' })
+				res.status(500).send({
+					error: 'Internal server error',
+					message: error.message
+				})
 			}
 		})
 	})

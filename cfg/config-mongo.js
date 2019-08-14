@@ -20,7 +20,7 @@ db.createUser({
 	authenticationRestrictions: [{ clientSource: ["127.0.0.1"] }]
 })
 
-/**@see https://docs.mongodb.com/manual/reference/method/db.createCollection/#db.createCollection */
+/**@see https://docs.mongodb.com/manual/reference/method/db.createCollection */
 db.createCollection('telemetry', {
 	validator : { $jsonSchema : {
 		bsonType: "object",
