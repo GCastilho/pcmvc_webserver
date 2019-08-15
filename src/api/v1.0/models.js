@@ -32,6 +32,10 @@ protocolo.v10 = mongoose.model('Telemetry', {
 		type: Number,
 		required: true
 	},
+	date: {
+		type: Date,
+		required: true
+	},
 	latitude: {
 		type: Number,
 		required: true,

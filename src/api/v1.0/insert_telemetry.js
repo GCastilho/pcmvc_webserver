@@ -52,10 +52,12 @@ module.exports = function(req, res) {
 		isValidInputSignature(req.body, signature)
 		.then(function saveTelemetry() {
 			const Telemetry = Models.protocol(message.ver)
+			const DATE = new Date()
 
 			const data = {
 				matricula: message.matricula,
-				timestamp: new Date().getTime(),
+				timestamp: DATE.getMilliseconds(),
+				date: DATE,
 				latitude: message.lat,
 				longitude: message.lon,
 				altura: message.hgt,
@@ -64,7 +66,7 @@ module.exports = function(req, res) {
 
 			return new Telemetry(data).save()
 		}).then(function sendSuccessMessage(telemetry) {
-			res.send({ message: 'Successfully inserted telemetry in database' })
+			res.status(201).send({ message: 'Successfully inserted telemetry in database' })
 		}).catch((error) => {
 			if (error.name === 'ValidationError'){
 				res.status(400).send({

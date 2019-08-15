@@ -11,15 +11,13 @@ const Telemetry = require('./models').protocol('last')
 const builder = new CsvBuilder({ headers: [
 	'matricula',
 	'timestamp',
-	'data',
-	'hora',
+	'data/hora',
 	'latitude',
 	'longitude',
 	'altura',
 	'wind_velocity'
 ]})
-.virtual('data', row => new Date(row.timestamp).toLocaleDateString('pt-BR'))
-.virtual('hora', row => new Date(row.timestamp).toLocaleTimeString('pt-BR'))
+.alias('data/hora', 'date')
 
 module.exports = function(req, res) {
 	const query = req.query
