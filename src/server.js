@@ -40,6 +40,12 @@ app.get('/', (req, res) => {
 })
 
 /**
+ * @description Envia todos os requests para /dashboard para a
+ * subpasta dashboard
+ */
+app.use('/dashboard', require('./dashboard'))
+
+/**
  * @description Os handlers para todos os requests para a API
  * ficam na pasta ./api
  */
