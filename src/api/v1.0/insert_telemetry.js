@@ -56,7 +56,7 @@ module.exports = function(req, res) {
 
 			const data = {
 				matricula: message.matricula,
-				timestamp: DATE.getMilliseconds(),
+				timestamp: DATE.getTime(),
 				date: DATE,
 				latitude: message.lat,
 				longitude: message.lon,
