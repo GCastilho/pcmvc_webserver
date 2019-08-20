@@ -1,15 +1,23 @@
+/**
+ * db/models/cookie.js
+ * 
+ * @description Model do collection de cookie de autenticação
+ */
+
 const mongoose = require('mongoose')
 
 module.exports = mongoose.model('Cookie', {
-	username: {
+	matricula: {
 		type: String,
-		required: true
+		required: true,
+		unique: true
 	},
 	sessionID: {
 		type: String,
-		required: true
+		required: true,
+		unique: true
 	},
-	timestamp: {
+	date: {
 		type: Date,
 		required: true
 	}
