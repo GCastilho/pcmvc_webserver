@@ -13,12 +13,19 @@ module.exports = mongoose.model('Person', {
 		unique: true,
 		trim: true
 	},
-	api_key: {
-		type: String
-	},
 	nome: {
 		type: String,
 		trim: true
+	},
+	api: {
+		key: {
+			type: String,
+			required: true
+		},
+		enabled: {
+			type: Boolean,
+			required: true
+		}
 	},
 	credentials: {
 		salt: {

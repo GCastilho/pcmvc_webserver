@@ -12,7 +12,8 @@
  */
 
 const sha256 = require('js-sha256')
-const Models = require('./models')
+const ApiModels = require('./models')
+const PersonModel = require('../../db/models/person')
 
 const minVersion = 1.0
 
@@ -51,7 +52,7 @@ module.exports = function(req, res) {
 	
 		isValidInputSignature(req.body, signature)
 		.then(function saveTelemetry() {
-			const Telemetry = Models.protocol(message.ver)
+			const Telemetry = ApiModels.protocol(message.ver)
 			const DATE = new Date()
 
 			const data = {
@@ -74,7 +75,10 @@ module.exports = function(req, res) {
 					message: error.message
 				})
 			} else if (error.code === 401) {
-				res.status(401).send({ error: 'Fail to verify message signature, check your API Key' })
+				res.status(401).send({
+					error: 'Fail to verify message signature, check your API Key',
+					message: error.message
+				})
 			} else if (error.message === 'VersionNotFound') {
 				res.status(422).send({ error: `Unreconized protocol version: ${message.ver}` })
 			} else {
@@ -89,12 +93,11 @@ module.exports = function(req, res) {
 
 const isValidInputSignature = function(body, signature) {
 	const matricula = JSON.parse(body).matricula
-	const ApiCredential = Models.credential
 
 	return new Promise((resolve, reject) => {
-		ApiCredential.findOne({
+		PersonModel.findOne({
 			matricula
-		}).then((credential) => {
+		}).then((person) => {
 			/**
 			 * @description O mesmo error code é usado para matrícula não
 			 * encontrada e chave inválida (para matrícula existente), o motivo
@@ -102,17 +105,24 @@ const isValidInputSignature = function(body, signature) {
 			 * matriculas estão cadastradas do database e quais não estão
 			 */
 			const error = { code: 401 }
-			if (!credential) {
+			if (!person) {
 				/**
-				 * @decription se credential for undefined significa que
+				 * @decription se person for undefined significa que
 				 * a matricula não foi encontrada no DB
 				 */
+				reject(error)
+			} else if (person.api.enabled === false) {
+				/**
+				 * @description Se enabled for false o usuário não está mais
+				 * autorizado a usar a API
+				 */
+				error.message = 'The given API Key is disabled'
 				reject(error)
 			}
 
 			let hash = sha256.create()
 			hash.update(body)
-			hash.update(credential.api_key)
+			hash.update(person.api.key)
 			const calculatedSignature = hash.hex()
 
 			signature === calculatedSignature ? resolve() : reject(error)

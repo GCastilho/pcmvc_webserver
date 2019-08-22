@@ -79,23 +79,4 @@ models.protocol = function(version) {
 	}
 }
 
-/**
- * @description Modelo das credenciais da API. Note que o nome da tabela com as
- * credenciais que a API irá procurar é a 'api_credential', esse nome pode ser
- * alterado em outros lugares se também for alterado aqui, ou a API não
- * conseguirá encontrar as credenciais de acesso à API e deixará de funcionar
- */
-models.credential = mongoose.model('ApiCredential', {
-	matricula: {
-		type: Number,
-		required: true,
-		trim: true
-	},
-	api_key: {
-		type: String,
-		required: true,
-		trim: true
-	}
-}, 'api_credential')
-
 module.exports = models
