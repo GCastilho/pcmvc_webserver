@@ -8,6 +8,22 @@
 	<body>
 		{{>header}}
 
-		<h1>Hello Dashboard!</h1>
+		<div class="container">
+			<h1>Hello Dashboard!</h1>
+			<a href="cadastro/">Página de cadastro</a>
+
+			<table id="userTable">
+				<tr>
+					<th>Matricula</th>
+					<th>Nome</th>
+					<th>Estado</th>
+				</tr>
+				{{#each user}}
+					<td>{{matricula}}</td>
+					<td>{{nome}}</td>
+					<td>{{api_enabled}}</td>
+				{{/each}}
+			</table>
+		</div>
 	</body>
 </html>

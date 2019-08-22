@@ -17,7 +17,7 @@ module.exports = function(sessionID) {
 			/**@description O cookie deve ter até 10 minutos para ser válido */
 			if (new Date() > new Date(cookie.date.getTime() + 10*60000))
 				throw 'Invalid cookie'
-			return Promise.resolve(cookie.matricula)
+			return cookie.matricula
 		}).then((matricula) => {
 			return CookieModel.findOneAndUpdate({
 				matricula

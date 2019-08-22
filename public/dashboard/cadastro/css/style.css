@@ -1,0 +1,4 @@
+/* Classe do checkbox de 'tornar professor como admin' */
+.adminCheckbox {
+	display: inline-block;
+}

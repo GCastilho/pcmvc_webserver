@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
-const mongoose = require('./db/mongoose')
+const PersonModel = require('./db/models/person')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -26,8 +26,7 @@ app.get('/', (req, res) => {
 	 * @todo Substituir uso do modelo de credential pela lista de RAs da
 	 * collection de cadastro de usuários (especialmente por segurança)
 	 */
-	const Credential = require('./api/v1.0/models').credential
-	Credential.find({})
+	PersonModel.find({})
 	.then((result) => {
 		result.forEach(entry => {
 			matricula.push(entry.matricula)

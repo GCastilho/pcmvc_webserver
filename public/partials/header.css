@@ -25,3 +25,9 @@ header li a {
 header li a:hover {
 	background-color: #111;
 }
+
+/**Define um estilo único para todas as classes 'container' do site */
+.container {
+	max-width: 960px;
+	margin: 0 auto;
+}

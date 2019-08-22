@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Cadastro | Projeto Comunitário de Medição do Vento de Campinas</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+
+	<body>
+		{{>header}}
+
+		<div class="container">
+			<h1>Hello from cadastro!</h1>
+
+			<form id="formCadastro" method="POST">
+				<label for="matricula">Matricula:</label>
+				<input id="matricula" name="matricula" type="text" placeholder="Matricula do novo usuário">
+
+				<label for="email">Email:</label>
+				<input id="email" name="email" type="email" placeholder="Email do novo usuário">
+
+				<label for="role">Tipo de usuário:</label>
+				<select id="role" onchange="updateAdminBox()">
+					<option value="aluno">Aluno</option>
+					<option value="professor">Professor</option>
+				</select>
+
+				<div id="admin" class="adminCheckbox"></div>
+
+				<script>
+					function updateAdminBox() {
+						const role = document.getElementById("role")
+						const option = role.options[role.selectedIndex].value
+						let admin = document.getElementById("admin")
+
+						if (option === 'professor') {
+							admin.innerHTML = '<input type="checkbox" name="admin">' +
+										'<label for="admin">Tornar professor um administrador</label>'
+						} else {
+							admin.innerHTML = ''
+						}
+					}
+				</script>
+			</form>
+		</div>
+	</body>
+</html>
