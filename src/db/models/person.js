@@ -17,6 +17,10 @@ module.exports = mongoose.model('Person', {
 		type: String,
 		trim: true
 	},
+	role: {
+		type: String,
+		default: 'aluno'
+	},
 	api: {
 		key: {
 			type: String,
@@ -30,11 +34,11 @@ module.exports = mongoose.model('Person', {
 	credentials: {
 		salt: {
 			type: String,
-			required: true
+			required: false
 		},
 		password_hash: {
 			type: String,
-			required: true
+			required: false
 		}
 	}
 })

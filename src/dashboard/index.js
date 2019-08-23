@@ -27,7 +27,7 @@ Router.use(function(req, res, next) {
 		res.cookie('SessionID', sessionID, { maxAge:600000, httpOnly:true })
 		next()	/**@description Passa para o próximo handler */
 	}).catch((err) => {
-		res.redirect(303, 'login/')
+		res.redirect(303, '/dashboard/login/')
 	})
 })
 
