@@ -16,13 +16,47 @@
 				<tr>
 					<th>Matricula</th>
 					<th>Nome</th>
-					<th>Estado</th>
+					<th>Acesso a API</th>
+					<th>Ação</th>
 				</tr>
-				{{#each user}}
-					<td>{{matricula}}</td>
-					<td>{{nome}}</td>
-					<td>{{api_enabled}}</td>
-				{{/each}}
+				<tr>
+					{{#each user}}
+						<td>{{matricula}}</td>
+						<td>{{nome}}</td>
+						{{#if api_enabled}}
+							<td>Autorizado</td>
+							<td><button type="button" onclick="change_access('disable', {{matricula}})">DESABILITAR</button></td>
+						{{else}}
+							<td>Desautorizado</td>
+							<td><button type="button" onclick="change_access('enable', {{matricula}})">HABILITAR</button></td>
+						{{/if}}
+					{{/each}}
+				</tr>
+				<script>
+					function change_access(command, matricula) {
+						fetch('/api/v1.0/controller', {
+							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'application/json'
+							},
+							method: 'POST',
+							body: JSON.stringify({
+								scope: 'change access',
+								command,
+								matricula
+							})
+						}).then(res => res.json())
+						.then(res => {
+							if (!res.success)
+								alert(res.message)
+							else if (res.success)
+								location.reload()
+							else
+								console.log(`Unexpected response: ${res}`)
+						})
+						.catch(err => alert(err))
+					}
+				</script>
 			</table>
 		</div>
 	</body>
