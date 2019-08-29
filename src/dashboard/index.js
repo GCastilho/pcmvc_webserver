@@ -7,10 +7,13 @@
 
 const Router = require('express').Router()
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 const isValidCookie = require('../db/validators/cookie')
 const PersonModel = require('../db/models/person')
 
+/**@description Express middlewares */
 Router.use(cookieParser())
+Router.use(bodyParser.urlencoded({ extended: true }))
 
 /**@description Router para /dashboard/login */
 Router.use('/login', require('./login'))
@@ -33,6 +36,9 @@ Router.use(function(req, res, next) {
 
 /**@description Router para /dashboard/cadastro */
 Router.use('/cadastro', require('./cadastro'))
+
+/**@description Router para /dashboard/password */
+Router.use('/password', require('./password'))
 
 /**@description Router para /dashboard */
 Router.use('/', function(req, res) {

@@ -13,6 +13,31 @@ module.exports = mongoose.model('Person', {
 		unique: true,
 		trim: true
 	},
+	/**@todo Validar o e-mail corretamente */
+	email: {
+		type: String,
+		trim: true,
+		lowercase: true,
+		unique: true,
+		required: true
+	},
+	/**
+	 * @todo Colocar em uma collection própria e fazer o validation_link
+	 * expirar depois de um tempo caso seja um link para atualizar a senha
+	 */
+	account: {
+		status: {
+			type: String,
+			required: true,
+			default: 'email not verified'
+		},
+		/**@description Código para redefinição de senha, SE solicitado */
+		validation_link: {
+			type: String,
+			required: false,
+			unique: true
+		}
+	},
 	nome: {
 		type: String,
 		trim: true

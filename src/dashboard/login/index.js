@@ -5,18 +5,10 @@
  */
 
 const Router = require('express').Router()
-const bodyParser = require('body-parser')
 const sha512 = require('js-sha512')
 const randomstring = require("randomstring")
-
 const PersonModel = require('../../db/models/person')
 const CookieModel = require('../../db/models/cookie')
-
-/**
- * @description Ativa o middleware para dar parse no body enviado pelo form
- * da página de login
- */
-Router.use(bodyParser.urlencoded({ extended: true }))
 
 /**@description Acessar por GET retorna a página de login */
 Router.get('/', function(req, res) {

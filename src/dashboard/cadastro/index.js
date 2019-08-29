@@ -5,16 +5,10 @@
  */
 
 const sha512 = require('js-sha512')
-const bodyParser = require('body-parser')
 const Router = require('express').Router()
 const randomstring = require('randomstring')
 const PersonModel = require('../../db/models/person')
-
-/**
- * @description Ativa o middleware para dar parse no body enviado pelo form
- * da página de cadastro
- */
-Router.use(bodyParser.urlencoded({ extended: true }))
+const Mailer = require('../../mailer')
 
 Router.get('/', function(req, res) {
 	res.render('cadastro')
@@ -22,17 +16,26 @@ Router.get('/', function(req, res) {
 
 Router.post('/', function(req, res) {
 	const salt = randomstring.generate()
-	const temporaryPassword = randomstring.generate({ length: 10 })
 
+	/**
+	 * @description Gera um salt (permanente) e um password aleatório que nunca
+	 * será utilizado (não sendo necessário saber), pois a conta estará
+	 * desativada até o usuário confirmar o email, e ao confirmar o email ele
+	 * irá inserir a senha definitiva
+	 */
 	let password_hash = sha512.create()
 	password_hash.update(salt)
-	password_hash.update(temporaryPassword)
+	password_hash.update(randomstring.generate({ length: 10 }))
 
 	const user = {
 		matricula: req.body.matricula,
+		email: req.body.email,
 		nome: req.body.nome,
 		role: req.body.role === 'aluno' ? 'aluno' :
 				req.body.admin === 'on' ? 'admin' : 'professor',
+		account: {
+			validation_link: randomstring.generate()
+		},
 		api: {
 			key: randomstring.generate({
 				length: 32,
@@ -48,8 +51,23 @@ Router.post('/', function(req, res) {
 	}
 	new PersonModel(user).save()
 	.then(person => {
-		console.log(person)
-		res.send(person)
+		if (person.role === 'professor' || person.role === 'admin') {
+			Mailer.sendTo.newProfessor(
+				person.email,
+				person.nome,
+				person.api.key,
+				person.account.validation_link
+		)} else {
+			Mailer.sendTo.newAluno(
+				person.email,
+				person.nome,
+				person.api.key
+		)}
+		res.render('sucesso-cadastro', {
+			matricula: person.matricula,
+			nome: person.nome,
+			api_key: person.api.key
+		})
 	}).catch(err => {
 		console.log(err)
 		res.send(err)

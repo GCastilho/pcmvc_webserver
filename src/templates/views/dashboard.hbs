@@ -11,6 +11,7 @@
 		<div class="container">
 			<h1>Hello Dashboard!</h1>
 			<a href="cadastro/">Página de cadastro</a>
+			<a href="password/">Atualizar password</a>
 
 			<table id="userTable">
 				<tr>
@@ -18,20 +19,22 @@
 					<th>Nome</th>
 					<th>Acesso a API</th>
 					<th>Ação</th>
+					<th>Api_key</th>
 				</tr>
-				<tr>
 					{{#each user}}
-						<td>{{matricula}}</td>
-						<td>{{nome}}</td>
-						{{#if api_enabled}}
-							<td>Autorizado</td>
-							<td><button type="button" onclick="change_access('disable', {{matricula}})">DESABILITAR</button></td>
-						{{else}}
-							<td>Desautorizado</td>
-							<td><button type="button" onclick="change_access('enable', {{matricula}})">HABILITAR</button></td>
-						{{/if}}
+						<tr>
+							<td>{{matricula}}</td>
+							<td>{{nome}}</td>
+							{{#if api_enabled}}
+								<td>Autorizado</td>
+								<td><button type="button" onclick="change_access('disable', {{matricula}})">DESAUTORIZAR</button></td>
+							{{else}}
+								<td>Desautorizado</td>
+								<td><button type="button" onclick="change_access('enable', {{matricula}})">AUTORIZAR</button></td>
+							{{/if}}
+							<td><button>Mostrar chave da API</button></td>
+						</tr>
 					{{/each}}
-				</tr>
 				<script>
 					function change_access(command, matricula) {
 						fetch('/api/v1.0/controller', {
