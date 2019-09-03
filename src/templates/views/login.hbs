@@ -19,6 +19,27 @@
 				<input id="passwordBox" name="password" type="password" placeholder="Password">
 				<button type="submit">Login</button>
 			</form>
+			<a onclick="esqueci_senha()">Esqueci minha senha</a>
 		</div>
+
+		<script>
+			function esqueci_senha() {
+				let form = document.getElementsByTagName('form')[0]
+				const new_form = '<h2>Redefinição de senha</h2>' +
+							'<label for="email">Email: </label>' +
+							'<input id="email" name="email" type="email" placeholder="Redefinir senha">' +
+							'<button type="submit">Redefinir senha</button>'
+				form.innerHTML = new_form
+				form.action = './redefinicao_senha'
+			}
+		</script>
+
+		<style>
+			a {
+				cursor: pointer;
+				color: blue;
+				text-decoration: underline;
+			}
+		</style>
 	</body>
 </html>

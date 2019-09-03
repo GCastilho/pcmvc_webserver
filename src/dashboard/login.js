@@ -10,6 +10,9 @@ const randomstring = require("randomstring")
 const PersonModel = require('../db/models/person')
 const CookieModel = require('../db/models/cookie')
 
+/**@description Router para redefinir senha */
+Router.use('/redefinicao_senha', require('./newPassword'))
+
 /**@description Acessar por GET retorna a página de login */
 Router.get('/', function(req, res) {
 	res.render('login')

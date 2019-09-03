@@ -23,6 +23,7 @@ mailer.sendTo = {
 
 		Core(undefined, destination, subject, body)
 	},
+
 	newAluno: function(destination, name, api_key) {
 		const subject = 'Bem vindo ao Projeto Comunitário de Medição do Vento de Campinas'
 		const body = `Caro ${name}, bem vindo ao PCMVC - Projeto Comunitário de Medição do Vento de Campinas
@@ -32,6 +33,18 @@ mailer.sendTo = {
 		Esta é a sua chave da API de telemetria: ${api_key}
 
 		Use ela no arduino para poder se autenticar em nossa API e enviar dados de velocidade do vento e contribuir para o projeto`
+
+		Core(undefined, destination, subject, body)
+	},
+
+	novaSenha: function(destination, name, validation_link) {
+		const subject = 'Solicitação de redefinição de senha | Projeto Comunitário de Medição do Vento de Campinas'
+
+		const body = `Caro ${name}, foi solicitada redefinição de senha para a sua conta
+		
+		Para redefinir sua senha use o seguinte link: http://localhost:3000/validation?link=${validation_link}
+		
+		Se não foi você que pediu a redefinição de senha, fique tranquilo, pois nada será alterado`
 
 		Core(undefined, destination, subject, body)
 	}
