@@ -20,6 +20,9 @@
 				<button type="submit">Login</button>
 			</form>
 			<a onclick="esqueci_senha()">Esqueci minha senha</a>
+			<br>
+			
+			<a onclick="esqueci_api()">Esqueci minha chave de API</a>
 		</div>
 
 		<script>
@@ -27,10 +30,21 @@
 				let form = document.getElementsByTagName('form')[0]
 				const new_form = '<h2>Redefinição de senha</h2>' +
 							'<label for="email">Email: </label>' +
-							'<input id="email" name="email" type="email" placeholder="Redefinir senha">' +
+							'<input id="email" name="email" type="email" placeholder="Email cadastrado">' +
 							'<button type="submit">Redefinir senha</button>'
 				form.innerHTML = new_form
 				form.action = './redefinicao_senha'
+			}
+
+			function esqueci_api() {
+				let form = document.getElementsByTagName('form')[0]
+				const new_form = '<h2>Lembrete de chave de API</h2>' +
+							'<p>NOTA: Sua chave de API será enviada por email</p>' +
+							'<label for="email">Email: </label>' +
+							'<input id="email" name="email" type="email" placeholder="Email cadastrado">' +
+							'<button type="submit">Lembre-me</button>'
+				form.innerHTML = new_form
+				form.action = './esqueci_api'
 			}
 		</script>
 

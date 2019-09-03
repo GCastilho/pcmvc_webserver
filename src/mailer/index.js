@@ -44,7 +44,21 @@ mailer.sendTo = {
 		
 		Para redefinir sua senha use o seguinte link: http://localhost:3000/validation?link=${validation_link}
 		
-		Se não foi você que pediu a redefinição de senha, fique tranquilo, pois nada será alterado`
+		Se não foi você que pediu a redefinição de senha, fique tranquilo, pois nada será alterado e nenhuma informação está comprometida`
+
+		Core(undefined, destination, subject, body)
+	},
+
+	lembreteApi: function(destination, name, api_key) {
+		const subject = 'Solicitação de lembrete de chave de API | Projeto Comunitário de Medição do Vento de Campinas'
+
+		const body = `Caro ${name}, foi solicitado lembrete da chave de API para a sua conta
+
+		Esta é a sua chave da API de telemetria: ${api_key}
+
+		Use ela no arduino para poder se autenticar em nossa API e enviar dados de velocidade do vento e contribuir para o projeto
+		
+		Se não foi você que pediu o lembrete de chave de API, fique tranquilo, pois nenhuma informação está comprometida`
 
 		Core(undefined, destination, subject, body)
 	}

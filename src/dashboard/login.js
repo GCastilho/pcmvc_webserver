@@ -13,6 +13,9 @@ const CookieModel = require('../db/models/cookie')
 /**@description Router para redefinir senha */
 Router.use('/redefinicao_senha', require('./newPassword'))
 
+/**@description Router para redefinir senha */
+Router.use('/esqueci_api', require('./esqueci_api'))
+
 /**@description Acessar por GET retorna a página de login */
 Router.get('/', function(req, res) {
 	res.render('login')
