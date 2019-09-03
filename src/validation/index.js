@@ -13,12 +13,10 @@ const Email_validation = require('../db/models/email_validation')
 
 Router.get('/', function(req, res) {
 	const validation_link = req.query.link
-	console.log(validation_link)
 
 	Email_validation.findOne({
 		validation_link
 	}).then(person => {
-		console.log(person)
 		res.render('password', { create_new_account: true})
 	}).catch(err => {
 		res.send(err)

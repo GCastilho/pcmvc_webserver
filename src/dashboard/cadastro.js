@@ -10,12 +10,29 @@ const randomstring = require('randomstring')
 const Person = require('../db/models/person')
 const Email_validation = require('../db/models/email_validation')
 const Mailer = require('../mailer')
+const GetCookieOwner = require('../db/validators/cookie')
 
 Router.get('/', function(req, res) {
 	res.render('cadastro')
 })
 
 Router.post('/', async function(req, res) {
+	try {
+		const requester_matricula = await GetCookieOwner(req.cookies.SessionID)
+		const requester = await Person.findOne({ matricula: requester_matricula })
+		if (requester.role === 'aluno')
+			return res.status(401).send({ error: 'Alunos não podem adicionar usuários ao sistema' })
+		else if (requester.role === 'professor' && req.body.role != 'aluno')
+			return res.status(401).send({ error: 'Um professor só pode adicionar alunos ao sistema' })
+		else if (!(requester.role != 'admin' || requester.role != 'professor'))
+			return res.status(500).send({ error: 'Erro de configuração do sistema' })
+	} catch(err) {
+		if (err === 'Cookie not found' || err === 'Invalid cookie')
+			return res.status(400).send({ error: 'Unauthenticated'} )
+		else
+			return res.status(500).send({ error: 'Internal server error' })
+	}
+
 	const salt = randomstring.generate()
 
 	/**
@@ -76,8 +93,12 @@ Router.post('/', async function(req, res) {
 			api_key: person.api.key
 		})
 	} catch(err) {
-		console.log(err)
-		res.send(err)
+		if (err.code === 11000) {
+			res.status(409).send({ error: 'Usuário já está cadastrado' })
+		} else {
+			console.log(err)
+			res.send(err)
+		}
 	}
 })
 
