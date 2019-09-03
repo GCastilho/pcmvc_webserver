@@ -19,7 +19,7 @@ mailer.sendTo = {
 
 		Use ela no arduino para poder se autenticar em nossa API e enviar dados de velocidade do vento e contribuir para o projeto
 		
-		Para concluir o cadastro e poder ter acesso ao painel de administração use o seguinte link: http://localhost:3000/teste/${validation_link}`
+		Para concluir o cadastro e poder ter acesso ao painel de administração use o seguinte link: http://localhost:3000/validation?link=${validation_link}`
 
 		Core(undefined, destination, subject, body)
 	},

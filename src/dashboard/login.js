@@ -1,5 +1,5 @@
 /**
- * dashboard/login/index.js
+ * dashboard/login.js
  * 
  * @description Handler da página de autenticação para a dashboard
  */
@@ -7,8 +7,8 @@
 const Router = require('express').Router()
 const sha512 = require('js-sha512')
 const randomstring = require("randomstring")
-const PersonModel = require('../../db/models/person')
-const CookieModel = require('../../db/models/cookie')
+const PersonModel = require('../db/models/person')
+const CookieModel = require('../db/models/cookie')
 
 /**@description Acessar por GET retorna a página de login */
 Router.get('/', function(req, res) {
@@ -24,6 +24,8 @@ Router.post('/', function(req, res) {
 		matricula: req.body.matricula
 	}).then((person) => {
 		if (person === null) throw 'UserNotFound'
+
+		if (person.account_status != 'active') throw 'AccountNotActive'
 
 		/**
 		 * @description o 'password_hash' armazenado no database é o sha512 da
@@ -65,7 +67,10 @@ Router.post('/', function(req, res) {
 			res.redirect(303, '/dashboard/')
 		})
 	}).catch((err) => {
-		if (err === 'UserNotFound' || err === 'InvalidCredentials') {
+		if (err === 'UserNotFound' ||
+			err === 'InvalidCredentials' ||
+			err === 'AccountNotActive'
+		) {
 			/**
 			 * @description Diferenciar usuário não encontrado de credenciais
 			 * inválidas faz com que seja possível descobrir quais RAs estão

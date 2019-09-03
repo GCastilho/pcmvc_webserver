@@ -51,6 +51,12 @@ app.use('/dashboard', require('./dashboard'))
 app.use('/api', require('./api'))
 
 /**
+ * @description Handler para requests de confirmação de conta (o link enviado
+ * por email)
+ */
+app.use('/validation', require('./validation'))
+
+/**
  * @description Esse handler será executado se nenhum outro path for encontrado
  * na pasta pública ou nos handlers manuais (como o da API)
  */

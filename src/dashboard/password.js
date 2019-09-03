@@ -1,5 +1,5 @@
 /**
- * dashboard/index.js
+ * dashboard/password.js
  * 
  * @description handler da password, todos os requests da /dashboard/password
  * são gerenciados aqui

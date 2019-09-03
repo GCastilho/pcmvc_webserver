@@ -1,5 +1,5 @@
 /**
- * dashboard/cadastro/index.js
+ * dashboard/cadastro.js
  * 
  * @description Handler para a sub-página de cadastro de usuários da dashboard
  */
@@ -7,14 +7,15 @@
 const sha512 = require('js-sha512')
 const Router = require('express').Router()
 const randomstring = require('randomstring')
-const PersonModel = require('../../db/models/person')
-const Mailer = require('../../mailer')
+const Person = require('../db/models/person')
+const Email_validation = require('../db/models/email_validation')
+const Mailer = require('../mailer')
 
 Router.get('/', function(req, res) {
 	res.render('cadastro')
 })
 
-Router.post('/', function(req, res) {
+Router.post('/', async function(req, res) {
 	const salt = randomstring.generate()
 
 	/**
@@ -33,9 +34,6 @@ Router.post('/', function(req, res) {
 		nome: req.body.nome,
 		role: req.body.role === 'aluno' ? 'aluno' :
 				req.body.admin === 'on' ? 'admin' : 'professor',
-		account: {
-			validation_link: randomstring.generate()
-		},
 		api: {
 			key: randomstring.generate({
 				length: 32,
@@ -49,14 +47,23 @@ Router.post('/', function(req, res) {
 			password_hash: password_hash.hex()
 		} : undefined
 	}
-	new PersonModel(user).save()
-	.then(person => {
+
+	const email_validation = {
+		matricula: req.body.matricula,
+		validation_link: randomstring.generate(),
+		request_date: new Date()
+	}
+
+	try {
+		const person = await new Person(user).save()
+		const validation = await new Email_validation(email_validation).save()
+	
 		if (person.role === 'professor' || person.role === 'admin') {
 			Mailer.sendTo.newProfessor(
 				person.email,
 				person.nome,
 				person.api.key,
-				person.account.validation_link
+				validation.validation_link
 		)} else {
 			Mailer.sendTo.newAluno(
 				person.email,
@@ -68,10 +75,10 @@ Router.post('/', function(req, res) {
 			nome: person.nome,
 			api_key: person.api.key
 		})
-	}).catch(err => {
+	} catch(err) {
 		console.log(err)
 		res.send(err)
-	})
+	}
 })
 
 module.exports = Router
