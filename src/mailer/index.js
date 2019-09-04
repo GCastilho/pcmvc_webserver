@@ -19,7 +19,7 @@ mailer.sendTo = {
 
 		'Use ela no arduino para poder se autenticar em nossa API e enviar dados de velocidade do vento e contribuir para o projeto\n\n' +
 
-		`Para concluir o cadastro e poder ter acesso ao painel de administração use o seguinte link: http://192.168.96.97/validation?link=${validation_link}`
+		`Para concluir o cadastro e poder ter acesso ao painel de administração use o seguinte link: http://pcmvc.fateccampinas.com.br/validation?link=${validation_link}`
 
 		Core(destination, subject, body)
 	},
@@ -42,7 +42,7 @@ mailer.sendTo = {
 
 		const body = `Caro ${name}, foi solicitada redefinição de senha para a sua conta\n\n` +
 		
-		`Para redefinir sua senha use o seguinte link: http://192.168.96.97/validation?link=${validation_link}\n\n` +
+		`Para redefinir sua senha use o seguinte link: http://pcmvc.fateccampinas.com.br/validation?link=${validation_link}\n\n` +
 		
 		'Se não foi você que pediu a redefinição de senha, fique tranquilo, pois nada será alterado e nenhuma informação está comprometida'
 
@@ -54,9 +54,9 @@ mailer.sendTo = {
 
 		const body = `Caro ${name}, foi solicitado lembrete da chave de API para a sua conta\n\n` +
 
-		`Esta é a sua chave da API de telemetria: ${api_key}\n\n`
+		`Esta é a sua chave da API de telemetria: ${api_key}\n\n` +
 
-		'Use ela no arduino para poder se autenticar em nossa API e enviar dados de velocidade do vento e contribuir para o projeto\n\n'
+		'Use ela no arduino para poder se autenticar em nossa API e enviar dados de velocidade do vento e contribuir para o projeto\n\n' +
 		
 		'Se não foi você que pediu o lembrete de chave de API, fique tranquilo, pois nenhuma informação está comprometida'
 
