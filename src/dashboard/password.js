@@ -41,7 +41,9 @@ Router.post('/', function(req, res) {
 		person.credentials.password_hash = password_hash
 		return person.save()
 	}).then(person => {
-		res.render('sucesso-nova-senha')
+		res.render('success-message', {
+			message: 'Senha atualizada com sucesso'
+		})
 	}).catch(err => {
 		if (err === 'InvalidOldPassword') {
 			res.status(401).send({

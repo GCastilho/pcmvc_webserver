@@ -9,16 +9,17 @@
 		{{>header}}
 
 		<div class="container">
-			<h1>Hello Dashboard!</h1>
+			<h1>Dashboard</h1>
 			<a href="cadastro/">Página de cadastro</a>
-			<a href="password/">Atualizar password</a>
+			<a href="password/">Trocar senha</a>
 
 			<table id="userTable">
 				<tr>
 					<th>Matricula</th>
 					<th>Nome</th>
 					<th>Acesso a API</th>
-					<th>Ação</th>
+					<th>Controle de API</th>
+					<th>Ação permanente</th>
 				</tr>
 					{{#each user}}
 						<tr>
@@ -31,6 +32,7 @@
 								<td>Desautorizado</td>
 								<td><button type="button" onclick="change_access('enable', {{matricula}})">AUTORIZAR</button></td>
 							{{/if}}
+							<td><button type="button" onclick="delete_user({{matricula}}, '{{nome}}')">DELETAR USUÁRIO</button></td>
 						</tr>
 					{{/each}}
 				<script>
@@ -56,6 +58,17 @@
 								console.log(`Unexpected response: ${res}`)
 						})
 						.catch(err => alert(err))
+					}
+
+					function delete_user(matricula, nome) {
+						let form = document.getElementById('userTable')
+						const warning_message = '<h2>ALERTA, ESSA AÇÃO É IRREVERSÍVEL</h2>' + 
+							`<h3>O usuário ${nome} será completamente removido da lista de usuários cadastrados</h3>` +
+							'<p>As medidas de telemetria enviadas por ele não serão removidas do banco de dados</p>' +
+							`<h4>Deseja realmente remover PERMANENTEMENTE o usuário ${nome} (matrícula ${matricula})?</h4>` +
+							'<a href=".">CANCELAR</a><br>' +
+							`<a href="./delete_user/?matricula=${matricula}">REMOVER USUÁRIO</a>`
+						form.innerHTML = warning_message
 					}
 				</script>
 			</table>

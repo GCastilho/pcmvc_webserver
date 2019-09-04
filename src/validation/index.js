@@ -52,7 +52,9 @@ Router.post('/', function(req, res) {
 		Email_validation.deleteOne({ matricula: person.matricula }).exec()
 		return person
 	}).then(person => {
-		res.render('sucesso-nova-senha')
+		res.render('success-message', {
+			message: 'Senha atualizada com sucesso'
+		})
 	}).catch(err => {
 		if (err instanceof TypeError) return res.status(404).send({
 			error: 'Invalid validation link'

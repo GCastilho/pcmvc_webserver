@@ -40,6 +40,9 @@ Router.use('/cadastro', require('./cadastro'))
 /**@description Router para /dashboard/password */
 Router.use('/password', require('./password'))
 
+/**@description Router para /dashboard/delete_user */
+Router.use('/delete_user', require('./delete_user'))
+
 /**@description Router para /dashboard */
 Router.use('/', function(req, res) {
 	let users = []
