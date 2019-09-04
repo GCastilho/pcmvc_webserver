@@ -57,6 +57,13 @@ app.use('/api', require('./api'))
 app.use('/validation', require('./validation'))
 
 /**
+ * @description Handler da página de documentação
+ */
+app.use('/docs', (req, res) => {
+	res.render('docs')
+})
+
+/**
  * @description Esse handler será executado se nenhum outro path for encontrado
  * na pasta pública ou nos handlers manuais (como o da API)
  */

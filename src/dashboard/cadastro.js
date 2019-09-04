@@ -2,6 +2,9 @@
  * dashboard/cadastro.js
  * 
  * @description Handler para a sub-página de cadastro de usuários da dashboard
+ * 
+ * @todo Alunos não recebem emails de confirmação, mas os links de confirmação
+ * para contas de alunos estão sendo salvos do database. Resolver isso
  */
 
 const sha512 = require('js-sha512')
